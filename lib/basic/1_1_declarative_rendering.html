@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id ="app">
+        {{message}}
+        <ul>
+            <li v-for="(item, index) in list" :key="index">
+                <span>{{index+"-"}}</span>
+                <span v-if="!item.del">{{item.title}}</span>
+                <span v-else style="text-decoration: line-through;">{{item.title}}</span>
+                <button v-show="!item.del">删除</button>
+            </li>
+        </ul>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        var vm = {
+            data(){
+                return{
+                    message: 'hello vue',
+                    list :[
+                        {
+                            title:'course 1',
+                            del : false
+                        },
+                        {
+                            title:'course 2',
+                            del : true
+                        }
+                    ]
+                }
+            }
+        }
+        Vue.createApp(vm).mount('#app')
+    </script>
+</body>
+</html>

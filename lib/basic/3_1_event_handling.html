@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="basic-event">
+        <button @click="count">Add 1</button>
+        <p>The button above has been clicked {{counter}} times.</p>
+
+        <button @click="print('counter is '+counter)">Print Message</button>
+
+        <button @click.once="doOnce">do once</button>
+
+        <input @keyup.enter="enterSubmit" />
+
+        <div @click.ctrl="ctrlClick">Ctrl Click</div>
+    </div>
+    <div id ="app">
+        <!-- <ul>
+            <todo-item v-for="(item, index) in list" v-bind:index="index"  v-bind:item="item"></todo-item>
+        </ul> -->
+        <todo-list v-bind:list="list"></todo-list>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        const TodoList ={
+            data(){
+                return{
+                    message: 'hello vue',
+                    list :[
+                        {
+                            title:'course 1',
+                            del : false
+                        },
+                        {
+                            title:'course 2',
+                            del : true
+                        },
+                        {
+                            title:'course 3',
+                            del : false
+                        },
+                        {
+                            title:'course 4',
+                            del : false
+                        }
+                    ]
+                }
+            }
+        }
+        const app = Vue.createApp(TodoList)
+        app.component('todo-item',{
+            props:['item','index'],
+            template:`
+                <li>
+                    <span>{{index+"-"}}<span>
+                    <span v-if="!item.del">{{item.title}}</span>
+                    <span v-else style="text-decoration: line-through;">{{item.title}}</span>
+                    <button v-show="!item.del" @click="handleClick">删除</button>
+                </li>
+            `,
+            methods: {
+                handleClick(e){
+                    console.log('点击删除按钮')
+                    this.$emit('delete',this.item.title) //子组件通过$emit让父组件可以监听到事件
+                }
+            },
+        })
+
+        app.component('todo-list',{
+            props:['list'],
+            template:`
+            <ul>
+                <todo-item @delete="handleDelete" v-for="(item, index) in list" v-bind:index="index"  v-bind:item="item"></todo-item>
+            </ul>
+            `,
+            methods:{
+                handleDelete(val){
+                    console.log('handle delete',val)
+                }
+            }    
+        })
+        app.mount('#app')
+
+        Vue.createApp({
+            data(){
+                return{
+                    counter:10
+                }
+            },
+            methods: {
+                count(event){
+                    this.counter +=1
+                    if (event){
+                        console.log('监听事件:',event.target.tagName,event.target)
+                    }
+                },
+                print(message){
+                    alert(message)
+                },
+                doOnce(){
+                    alert("do-once")
+                },
+                enterSubmit(){
+                    alert('提交')
+                },
+                ctrlClick(){
+                    alert('ctrl click')
+                }
+            },
+        }).mount('#basic-event')
+    </script>
+</body>
+</html>

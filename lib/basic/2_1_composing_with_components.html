@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id ="app">
+        <!-- <ul>
+            <todo-item v-for="(item, index) in list" v-bind:index="index"  v-bind:item="item"></todo-item>
+        </ul> -->
+        <todo-list v-bind:list="list"></todo-list>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        const TodoList ={
+            data(){
+                return{
+                    message: 'hello vue',
+                    list :[
+                        {
+                            title:'course 1',
+                            del : false
+                        },
+                        {
+                            title:'course 2',
+                            del : true
+                        }
+                    ]
+                }
+            }
+        }
+        const app = Vue.createApp(TodoList)
+        app.component('todo-item',{
+            props:['item','index'],
+            template:`
+                <li>
+                    <span>{{index+"-"}}<span>
+                    <span v-if="!item.del">{{item.title}}</span>
+                    <span v-else style="text-decoration: line-through;">{{item.title}}</span>
+                    <button v-show="!item.del">删除</button>
+                </li>
+            `
+        })
+
+        app.component('todo-list',{
+            props:['list'],
+            template:`
+            <ul>
+                <todo-item v-for="(item, index) in list" v-bind:index="index"  v-bind:item="item"></todo-item>
+            </ul>
+            `
+        })
+        app.mount('#app')
+    </script>
+</body>
+</html>
