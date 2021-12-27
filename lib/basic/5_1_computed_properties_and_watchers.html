@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <span>姓名：{{fullname}}   </span>
+        <label>年龄</label>
+        <input v-model="age"></input>
+        <p>{{desc}}</p>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script>
+    const vm = Vue.createApp({
+        data(){
+            return {
+                name:'tip',
+                lastname:'tok',
+                age:20,
+                describe:''
+            }
+        },
+        computed:{
+            fullname(){
+                return this.name+this.lastname
+            },
+            desc:{
+                get(){
+                    if(this.describe.length>0){
+                    return this.describe
+                }
+                    return this.fullname +" age is "+this.age
+                },
+                set(newAge){
+                    this.age = newAge
+                }
+            }
+        },
+        watch:{
+            age(n,o){
+                if (n!=o){
+                    this.getAnswer()
+                }
+            }
+        },
+        methods: {
+            getAnswer(){
+                this.describe ="waiting..."
+                axios.get('https://yesno.wtf/api').then(response=>{
+                    this.describe = response.data.answer
+                }).catch(error=>{
+                    this.describe = 'Error! Could not reach the API. ' + error
+                })
+            }
+        },
+    }).mount('#app')    
+    </script>
+</body>
+</html>
