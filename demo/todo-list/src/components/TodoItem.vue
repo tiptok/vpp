@@ -23,6 +23,9 @@ export default {
     methods: {
         handleClick(){
             console.log('点击删除按钮')
+            if (this.del){
+                //this.del = false
+            }
             this.$emit('delete',this.title) //子组件通过$emit让父组件可以监听到事件
         }
     }

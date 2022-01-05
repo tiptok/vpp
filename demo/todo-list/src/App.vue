@@ -1,5 +1,7 @@
 <template>
   <div id ="app">
+    <input v-model="message"/>
+    <input :value="message" @input="handleChange"/>
     <span>hello {{message}} {{list.length}}</span>
     <h2>1.直接遍历</h2>
     <li v-for="item in list" :key="item">{{item.title}}</li>
@@ -9,7 +11,7 @@
 
     <h2>3.父级组件遍历</h2> 
     <todo-list>
-      <todo-item  v-for="(item, index) in list" :key="index" :index="index" :title="item.title" :del="item.del">
+      <todo-item @delete="handleDelete" v-for="(item, index) in list" :key="index" :index="index" :title="item.title" :del="item.del">
       </todo-item>
     </todo-list>
     
@@ -54,6 +56,14 @@ export default {
               }
           ],
       }
-  }
+  },
+  methods: {
+    handleChange(e){
+      this.message = e.target.value
+    },
+    handleDelete(val){
+      console.log('delete',val)
+    }
+  },
 }
 </script>
