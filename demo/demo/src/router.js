@@ -9,6 +9,11 @@ const router = createRouter({
             path:"/",
             name:"home",
             component:Home
+        },
+        {
+            path:"/1.4",
+            name:"如何触发组件的更新",
+            component:() =>import("./views/1.4")
         }
     ]
 })
